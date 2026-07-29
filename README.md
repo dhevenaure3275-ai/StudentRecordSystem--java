@@ -1,3 +1,3 @@
 # StudentRecordSystem--java
-Console + GUI Student Record System using Java and SQLite for BSIS portfolio
+ Student Record System using Java for BSIS portfolio this program is for beginners only.
 StudentRecordSystem.java
