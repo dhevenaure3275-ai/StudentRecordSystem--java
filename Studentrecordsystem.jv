@@ -1,0 +1,132 @@
+import java.io.*;
+import java.util.*;
+
+// 1. OOP: Student Class
+class Student {
+    String id;
+    String name;
+    double grade;
+
+    public Student(String id , String name,double grade) {
+        this.id = id;
+        this.name = name;
+        this.grade = grade;
+    }
+
+    // To save fast in the file
+    public String toFileString() {
+        return id+ "," + name + "," +  grade;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + " | Name: " + name + "  | Grade: " + grade;
+    }
+}
+
+public class StudentRecordSystem {
+    static ArrayList<Student> students = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
+    static String filename = "students.txt";
+
+    public static void main(String[] args) {
+        loadFromFile(); // Auto load page
+
+        while (true) {
+            System.out.println("\n===== STUDENT RECORD SYSTEM =====");
+            System.out.println("1. Add Student");
+            System.out.println("2. View All Students");
+            System.out.println("3. Update Student Grade");
+            System.out.println("4. Delete Student");
+            System.out.println("5. Exit");
+            System.out.println("Credit to: Dheven_Aure_25");
+            System.out.println("If you encounter some problem please report to developer");
+            System.out.print("Choose: ");
+            
+
+            int choice = sc.nextInt();
+            sc.nextLine(); // consume enter
+
+            switch (choice) {
+                case 1: addStudent(); break;
+                case 2: viewStudents(); break;
+                case 3: updateStudent(); break;
+                case 4: deleteStudent(); break;
+                case 5: saveToFile(); System.exit(0);
+                default: System.out.println("Invalid choice!");
+            }
+        }
+    }
+
+    // CREATE
+    static void addStudent() {
+        System.out.print("Enter Student ID: ");
+        String id = sc.nextLine();
+        System.out.print("Enter Name: ");
+        String name = sc.nextLine();
+        System.out.print("Enter Grade: ");
+        double grade = sc.nextDouble();
+
+        students.add(new Student(id,name,grade));
+        System.out.println("Student Added!");
+    }
+
+    // READ
+    static void viewStudents() {
+        if (students.isEmpty()) {
+            System.out.println("No students yet.");
+            return;
+        }
+        for (Student s : students) {
+            System.out.println(s);
+        }
+    }
+
+    // UPDATE
+    static void updateStudent() {
+        System.out.print("Enter Student ID to update: ");
+        String id = sc.nextLine();
+        for (Student s : students) {
+            if (s.id.equals(id)) {
+                System.out.print("Enter new Grade: ");
+                s.grade = sc.nextDouble();
+                System.out.println("Grade Updated!");
+                return;
+            }
+        }
+        System.out.println("Student not found.");
+    }
+
+    // DELETE
+    static void deleteStudent() {
+        System.out.print("Enter Student ID to delete: ");
+        String id = sc.nextLine();
+        students.removeIf(s -> s.id.equals(id));
+        System.out.println("Student Deleted!");
+    }
+
+    // SAVE TO FILE
+    static void saveToFile() {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(filename))) {
+            for (Student s : students) {
+                pw.println(s.toFileString());
+            }
+            System.out.println("Data saved to " + filename);
+        } catch (IOException e) {
+            System.out.println("Error saving file.");
+        }
+    }
+
+    // LOAD FROM FILE
+    static void loadFromFile() {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = br.readLine())!= null) {
+                String[] data = line.split(",");
+                students.add(new Student(data[0], data[1], Double.parseDouble(data[2])));
+            }
+        } catch (IOException e) {
+            // No file
+        }
+    }
+}
