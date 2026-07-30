@@ -4,4 +4,4 @@ StudentRecordSystem.java
 Save to student.txt
 
 
-I will continue to improve my programming, you can count on me.
+I will continue to improve my programming skills, you can count on me.
